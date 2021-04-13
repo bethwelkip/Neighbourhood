@@ -1,18 +1,14 @@
 from django.db import models
 from cloudinary.models import CloudinaryField
+from django.contrib.auth.models import User
 # Create your models here.
-class Users(models.Model):
-    name = models.CharField(max_length=100)
-    bio = models.TextField(blank = True)
-    is_admin = models.BooleanField(default=False)
 class Admin(models.Model):
-    user = models.ForeignKey(to=Users, on_delete = models.CASCADE)
-
+    user = models.ForeignKey(to=User, on_delete = models.CASCADE)
 class Neighbourhood(models.Model):
     name = models.CharField(max_length=100)
     location = models.CharField(max_length=100)
     occupants = models.IntegerField()
-    admin = models.ForeignKey(Admin, on_delete = models.CASCADE)
+    admin = models.ForeignKey(Admin,on_delete = models.CASCADE)
     def create_neigborhood(name, location, admin):
         neighbor = Neighbourhood(name=name, location = location, occupants = 0, admin = admin)
         neighbor.save()
@@ -25,6 +21,16 @@ class Neighbourhood(models.Model):
     def update_occupants():
         pass
     
+class Users(models.Model):
+    name = models.CharField(max_length=100)
+    bio = models.TextField(blank = True)
+    is_admin = models.BooleanField(default=False)
+    user = models.ForeignKey(to=User, on_delete = models.CASCADE)
+    neighbourhood = models.ForeignKey(Neighbourhood, null = True, on_delete = models.CASCADE)
+    def update_neighborhood(self, new_neighbourhood):
+        self.update(neighbourhood = new_neighbourhood)
+        self.save()
+
 class Contact(models.Model):
     name = models.CharField(max_length=100)
     email = models.EmailField(max_length = 100)
