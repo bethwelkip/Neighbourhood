@@ -16,7 +16,8 @@ def register(request):
         form = UserCreationForm(data=request.POST)
         if form.is_valid():
             user = form.save()
-            new_user = Users(name = user.username, user=user)
+            neigh = Neighbourhood.objects.first()
+            new_user = Users(name = user.username, user=user, neighbourhood = neigh)
             new_user.save()
             return redirect('login')
     return render(request, 'auth/register.html', {"form": form})
