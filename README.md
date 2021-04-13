@@ -16,6 +16,9 @@ This is a website that lets you explore the businesses  and amenities in your ne
 # Live Site 
 If you are only interested in viewing the deployed web app, click on the link below:
 **[Neighbourhuud](https://neighbourhuud.herokuapp.com/ )**
+Sample login details:
+username: kiplimo
+password: y0la8%xko
 
 
 ## Installation Requirements
