@@ -9,4 +9,5 @@ url(r'business/$', views.business, name = 'business'),
 url(r'contact/$', views.contact, name = 'contact'),
 url(r'post/$', views.post, name = 'post'),
 url(r'neighbourhood/$', views.neighbourhood, name = 'neighbourhood'),
+url(r'search_business/$', views.search_business, name = 'search_business'),
 ]

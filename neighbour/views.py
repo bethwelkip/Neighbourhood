@@ -16,7 +16,7 @@ def register(request):
         form = UserCreationForm(data=request.POST)
         if form.is_valid():
             user = form.save()
-            new_user = Users(name = user.username)
+            new_user = Users(name = user.username, user=user)
             new_user.save()
             return redirect('login')
     return render(request, 'auth/register.html', {"form": form})
@@ -37,47 +37,46 @@ def login(request):
     else: 
         return render(request, 'auth/login.html', context)   
 
+@login_required(login_url = '/auth/login')
 def logout_me(request):
     logout(request)
     messages.info(request, "You have logged out successfully!")
     return redirect("login")
 
-
+@login_required(login_url = '/auth/login')
 def home(request):
-    # project = [project for project in Project.objects.all()]
-    # projects = [(project, [project.ratings]) for project in project] 
     return post(request)#render(request, 'home/base.html', {'projects': ""})
 
+@login_required(login_url = '/auth/login')
 def search_business(request):
     if 'business' in request.GET and request.GET["business"]:
         search_term = request.GET.get("business")
         searched_business= Business.search_business(search_term)
-        # businesses = list()
-        # for business in searched_business:
-        #     businesses .append()
         message = f"You have searched for {search_term}"
         return render(request, 'home/business.html',{"message":message,"businesses": searched_business})
 
     else:
         return redirect('home')
-
-from .initial import initialize
+@login_required(login_url = '/auth/login')
 def business(request):
     businesses = Business.objects.all()
-    if len(businesses) < 5:
-        initialize()
-    businesses = Business.objects.all()
     return render(request, 'home/business.html', {'businesses': businesses})
+
+@login_required(login_url = '/auth/login')
 def neighbourhood(request):
-    current_user = request.user
+    user = request.user
+    current_user = Users.objects.get(user_id = user.id)
+    print(current_user)
     neighbourhood = current_user.neighbourhood
     return render(request, 'home/neighbor_hood.html', {'neighbourhood': neighbourhood})
+
+@login_required(login_url = '/auth/login')
 def post(request):
     posts = Post.objects.all()
-    # if len(posts) < 5:
-    #     initialize()
     posts = Post.objects.all()
     return render(request, 'home/posts.html', {'posts': posts})
+
+@login_required(login_url = '/auth/login')
 def contact(request):
     cards = Contact.objects.all()
     return render(request, 'home/contact.html', {'cards': cards})
