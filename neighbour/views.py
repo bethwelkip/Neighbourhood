@@ -74,8 +74,8 @@ def neighbourhood(request):
     return render(request, 'home/neighbor_hood.html', {'neighbourhood': neighbourhood})
 def post(request):
     posts = Post.objects.all()
-    if len(posts) < 5:
-        initialize()
+    # if len(posts) < 5:
+    #     initialize()
     posts = Post.objects.all()
     return render(request, 'home/posts.html', {'posts': posts})
 def contact(request):
