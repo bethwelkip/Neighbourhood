@@ -7,10 +7,8 @@
 {% endblock %}
 
 {% block content %}
-{% if messages %}
-{% for message in messages %}
+{% if message %}
 <h1 style="text-align:center; font-style: bold; color:orange"> {{message}} </h1>
-{%endfor %}
 {%endif %}
 {% load bootstrap4 %}
 {% load cloudinary %}
@@ -29,7 +27,7 @@
                 <div class="card-body">
                     <h5 class="card-title">{{business.name}}</h5>
                     <p> welcome to our store.</p>
-                    <p> we specialize in {{business.services}} and are available in the {{business.neighbourhood}}
+                    <p> we specialize in {{business.services}} and are available in the {{business.neighbourhood.name}}
                         Neighbourhood
                     </p>
                     <p class="card-text"> Feel free to contact us at: {{business.email}}</p>
