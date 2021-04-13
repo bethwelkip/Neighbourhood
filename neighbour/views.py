@@ -42,12 +42,30 @@ def logout_me(request):
     messages.info(request, "You have logged out successfully!")
     return redirect("login")
 
+
 def home(request):
     # project = [project for project in Project.objects.all()]
     # projects = [(project, [project.ratings]) for project in project] 
-    return render(request, 'home/base.html', {'projects': ""})
+    return post(request)#render(request, 'home/base.html', {'projects': ""})
 
+def search_business(request):
+    if 'business' in request.GET and request.GET["business"]:
+        search_term = request.GET.get("business")
+        searched_business= Business.search_business(search_term)
+        # businesses = list()
+        # for business in searched_business:
+        #     businesses .append()
+        message = f"You have searched for {search_term}"
+        return render(request, 'home/business.html',{"message":message,"businesses": searched_business})
+
+    else:
+        return redirect('home')
+
+from .initial import initialize
 def business(request):
+    businesses = Business.objects.all()
+    if len(businesses) < 5:
+        initialize()
     businesses = Business.objects.all()
     return render(request, 'home/business.html', {'businesses': businesses})
 def neighbourhood(request):
@@ -56,5 +74,11 @@ def neighbourhood(request):
     return render(request, 'home/neighbor_hood.html', {'neighbourhood': neighbourhood})
 def post(request):
     posts = Post.objects.all()
+    if len(posts) < 5:
+        initialize()
+    posts = Post.objects.all()
     return render(request, 'home/posts.html', {'posts': posts})
+def contact(request):
+    cards = Contact.objects.all()
+    return render(request, 'home/contact.html', {'cards': cards})
 
